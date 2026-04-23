@@ -1,42 +1,74 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\ProfileController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*
+|--------------------------------------------------------------------------
+| HOME
+|--------------------------------------------------------------------------
+*/
+Route::get('/', fn () => view('welcome'));
 
+/*
+|--------------------------------------------------------------------------
+| DASHBOARD
+|--------------------------------------------------------------------------
+*/
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+/*
+|--------------------------------------------------------------------------
+| AUTH MIDDLEWARE
+|--------------------------------------------------------------------------
+*/
+Route::middleware(['auth'])->group(function () {
+
+    /*
+    |--------------------------------------------------------------------------
+    | PROFILE (BREEZE)
+    |--------------------------------------------------------------------------
+    */
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    // MENU
-    Route::get('/menus', [MenuController::class,'index'])->name('menus.index');
-    Route::get('/menus/create', [MenuController::class,'create'])->name('menus.create');
-    Route::post('/menus/store', [MenuController::class,'store'])->name('menus.store');
-    Route::get('/menus/edit/{id}', [MenuController::class,'edit'])->name('menus.edit');
-    Route::post('/menus/update/{id}', [MenuController::class,'update'])->name('menus.update');
-    Route::get('/menus/delete/{id}', [MenuController::class,'destroy'])->name('menus.delete');
+    /*
+    |--------------------------------------------------------------------------
+    | MENU MANAGEMENT (MANUAL ROUTES)
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/menus', [MenuController::class, 'index'])->name('menus.index');
+    Route::get('/menus/create', [MenuController::class, 'create'])->name('menus.create');
+    Route::post('/menus', [MenuController::class, 'store'])->name('menus.store');
+    Route::get('/menus/{id}/edit', [MenuController::class, 'edit'])->name('menus.edit');
+    Route::put('/menus/{id}', [MenuController::class, 'update'])->name('menus.update');
+    Route::delete('/menus/{id}', [MenuController::class, 'destroy'])->name('menus.destroy');
 
-    // ORDER
-    Route::get('/orders', [OrderController::class,'index'])->name('orders.index');
-    Route::get('/orders/create', [OrderController::class,'create'])->name('orders.create');
-    Route::post('/orders/store', [OrderController::class,'store'])->name('orders.store');
+    /*
+    |--------------------------------------------------------------------------
+    | ORDER MANAGEMENT (MANUAL ROUTES)
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create', [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
-    // PAYMENT
-    Route::get('/payments', [PaymentController::class,'index'])->name('payments.index');
-    Route::post('/payments/store', [PaymentController::class,'store'])->name('payments.store');
+    /*
+    |--------------------------------------------------------------------------
+    | PAYMENT MANAGEMENT (MANUAL ROUTES)
+    |--------------------------------------------------------------------------
+    */
+    Route::get('/payments', [PaymentController::class, 'index'])->name('payments.index');
+    Route::get('/payments/create', [PaymentController::class, 'create'])->name('payments.create');
+    Route::post('/payments', [PaymentController::class, 'store'])->name('payments.store');
+
 });
-
 
 require __DIR__.'/auth.php';

@@ -11,7 +11,7 @@
 
                 <div class="mb-4">
                     <a href="{{ route('menus.create') }}"
-                    class="bg-blue-500 text-white px-4 py-2 rounded">
+                       class="bg-blue-500 text-white px-4 py-2 rounded">
                         + Add Rice
                     </a>
                 </div>
@@ -31,10 +31,25 @@
                         <td class="p-2">{{ $menu->category }}</td>
                         <td class="p-2">₱{{ $menu->price_per_kilo }}</td>
                         <td class="p-2">{{ $menu->stock }}</td>
-                        <td class="p-2">
-                            <a href="{{ route('menus.edit', $menu->id) }}" class="text-blue-500">Edit</a>
-                            |
-                            <a href="{{ route('menus.delete', $menu->id) }}" class="text-red-500">Delete</a>
+
+                        <td class="p-2 flex gap-2">
+
+                            <!-- EDIT -->
+                            <a href="{{ route('menus.edit', $menu->id) }}"
+                               class="text-blue-500">
+                               Edit
+                            </a>
+
+                            <!-- DELETE -->
+                            <form action="{{ route('menus.destroy', $menu->id) }}" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button class="text-red-500"
+                                        onclick="return confirm('Delete this item?')">
+                                    Delete
+                                </button>
+                            </form>
+
                         </td>
                     </tr>
                     @endforeach

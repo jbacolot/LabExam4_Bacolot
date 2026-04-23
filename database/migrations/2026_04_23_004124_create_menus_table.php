@@ -13,6 +13,10 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('category');
+            $table->decimal('price_per_kilo', 8, 2);
+            $table->integer('stock');
             $table->timestamps();
         });
     }

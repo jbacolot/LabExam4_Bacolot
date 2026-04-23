@@ -6,26 +6,31 @@
     </x-slot>
 
     <div class="py-12">
-        <div class="max-w-lg mx-auto">
-            <div class="bg-white p-6 shadow rounded">
+        <div class="max-w-xl mx-auto">
+            <div class="bg-white shadow rounded-lg p-6">
 
                 <form method="POST" action="{{ route('payments.store') }}">
                     @csrf
 
                     <div class="mb-4">
-                        <label>Order ID</label>
-                        <input type="number" name="order_id"
-                        class="w-full border p-2">
+                        <label class="block">Select Order</label>
+                        <select name="order_id" class="w-full border p-2 rounded">
+                            @foreach($orders as $order)
+                                <option value="{{ $order->id }}">
+                                    Order {{ $order->id }} - ₱{{ $order->total_cost }}
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="mb-4">
-                        <label>Amount Paid</label>
+                        <label class="block">Amount Paid</label>
                         <input type="number" name="amount_paid"
-                        class="w-full border p-2">
+                               class="w-full border p-2 rounded" required>
                     </div>
 
-                    <button class="bg-blue-500 text-white px-4 py-2 rounded">
-                        Pay
+                    <button class="bg-purple-500 text-white px-4 py-2 rounded">
+                        Submit Payment
                     </button>
                 </form>
 
